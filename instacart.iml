@@ -8,6 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="mysql-connector-java-8.0.13" level="project" />
-    <orderEntry type="library" name="RedshiftJDBC42-no-awssdk-1.2.55.1083" level="project" />
+    <orderEntry type="library" name="redshift-jdbc42-2.0.0.7" level="project" />
   </component>
 </module>
