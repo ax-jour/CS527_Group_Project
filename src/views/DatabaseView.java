@@ -4,6 +4,7 @@ package views;
 //import com.sun.java.swing.action.DelegateAction;
 
 import dbconns.MySQLAccess;
+import dbconns.RedshiftAccess;
 import models.DatabaseModel;
 
 import java.awt.*;
@@ -222,17 +223,25 @@ public class DatabaseView extends JPanel{
         button.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                //System.out.println(getQuery());
 
-                MySQLAccess db = new MySQLAccess();
-                try {
-                    db.queryMySQL("instacart_dev", "SELECT * FROM aisles");
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                if (getDatabaseType() == "Mysql") {
+                    MySQLAccess db = new MySQLAccess();
+                    try {
+                        db.exec(getQuery());
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                } else {
+                    RedshiftAccess db = new RedshiftAccess();
+                    try {
+                        db.exec(getQuery());
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
 
-                System.out.println(getDatabaseType());
-                System.out.println(getDatabaseName());
+                System.out.println();
+                System.out.println("getDatabaseName" + getDatabaseName());
                 Object[] columnNames = {"姓名", "语文", "数学", "英语", "总分","sds", "总分","总分","总分","总分",};
                 Object[][] rowData = {
                         {"张三", 80, 80, 80, 240, 240, 240, 240, 240, 240}
