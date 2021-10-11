@@ -1,0 +1,42 @@
+.title {
+    font-size: x-large;
+    font-weight: bold;
+    width: calc(100% - 20px);
+
+}
+
+.choiceButtonRow {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.choiceButton {
+    border: 1px solid black;
+}
+
+
+.inputBox {
+    width: calc(100% - 20px);
+    min-height:200px;
+    font-size: 20px;
+}
+
+.runningTimeBox {
+    padding-bottom: 5px;
+}
+
+.resultDiv{
+    border: 1px solid black;
+    width:calc(100% - 20px);
+    min-height: 100px;
+}
+
+.resultBox {
+    width: 100%;
+    min-height: 200px;
+    text-align: center;
+    border-collapse:collapse;
+}
+
+
