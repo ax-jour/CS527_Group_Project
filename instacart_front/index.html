@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <title>CS527 Team 5 ver0.3.2</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">CS527 Project 1 Team 5</a>
+      </div>
+    </nav>
+
+    <main class="container-fluid pt-5 mt-5">
+      <div class="row">
+        <div class="col-4">
+          <div class="row">
+            <div class="mb-3" style="max-height: 60vh; font-size: 0.8em;">
+              <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-interval="false">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img src="./image/WeChat Screenshot_20211111231954.png" class="d-block w-100" alt="...">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="./image/image.png" class="d-block" style="height: 100vh;" alt="...">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="row">
+            <div class="mb-3">
+              <label for="query_area" class="form-label">Input query here:</label>
+              <textarea class="form-control" id="query_area" rows="4"></textarea>
+            </div>
+            <div class="col-md-3 text-left">
+              <select id="database" class="form-select" aria-label="Default select example">
+                <option value="adnimerge" selected>adnimerge</option>
+                <option value="instacart">instacart</option>
+                <option value="adnimerge_dev">adnimerge_dev</option>
+                <option value="instacart_dev">instacart_dev</option>
+              </select>
+            </div>
+            <div class="col-md-3 text-left">
+              <select id="platform" class="form-select" aria-label="Default select example">
+                <option value="mysql" selected>MySQL</option>
+                <option value="redshift">Redshift</option>
+                <option value="sqlserver">SQL Server</option>
+              </select>
+            </div>
+            <div class="col-md-2 text-right">
+              Elasped Time: <span class="mr-1 ml-1" id="elaspedTime"></span> s
+            </div>
+            <div class="col-md-4 text-right text-end">
+              <button class="btn btn-secondary" id="clear_query">CLEAR</button>
+              <button class="btn btn-success" id="execute_query" type="button">RUN</button>
+            </div>
+            <div class="col-12 mb-3 mt-5">
+              <div class="row">
+                <div class="col text-center">
+              <span class="mr-1 ml-1 text-danger" id="errorMsg"></span>
+                </div>
+              </div>
+              <div class="overflow-auto" style="max-height: 60vh; font-size: 0.8em;">
+                <table class="table table-striped">
+                  <thead>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+
+      $(() => {
+        $("#clear_query").click(function(){
+          $("#query_area").val('');
+        });
+        
+        $('.carousel').carousel({
+          interval: false,
+        });
+      })
+
+      $("#execute_query").click(function(){
+        //Clean all data
+        $("thead").empty();
+        $("tbody").empty();
+        $("#elaspedTime").empty();
+        $("#errorMsg").empty();
+
+        const database = $('#database').find(":selected").val();
+        const platform = $('#platform').find(":selected").val();
+        const query = $('#query_area').val();
+
+        let data = {
+          script: query,
+          db: database
+        }
+
+        $.ajax
+        ({
+          type: "POST",
+          // url: `http://axjour.tplinkdns.com/db/${platform}`,
+          url: `http://ec2-3-131-198-17.us-east-2.compute.amazonaws.com:8081/db/${platform}`,
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+          success: function (rtn){
+            appendData(rtn);
+          },
+          error: (error) => {
+            console.error(error);
+            $(`#errorMsg`).text(error.responseText);
+          }
+        });
+
+        const appendData = rtn => {
+          const col_name = rtn.colName;
+          const raw_data = rtn.rawData;
+          const timeElasped = rtn.elapsed_time / 1000;
+
+          let title_placeholder = `<tr>`
+          col_name.forEach(col => {
+            title_placeholder = title_placeholder + `<td>${col}</td>`
+          });
+          title_placeholder = title_placeholder + `</tr>`
+          $('thead').append(title_placeholder)
+
+          
+          raw_data.forEach(row => {
+            let placeholder = `<tr>`
+            row.forEach(i => {
+              placeholder = placeholder + `<td>${i}</td>`
+            })
+            placeholder = placeholder + `</tr>`
+            $('tbody').append(placeholder)
+          });
+
+          $('#elaspedTime').text(timeElasped)
+        }
+
+      });
+		</script>
+  	</body>
+</html>
