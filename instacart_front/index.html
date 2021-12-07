@@ -9,12 +9,18 @@
       integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
       crossorigin="anonymous"
     />
-    <title>CS527 Team 5 ver0.3.2</title>
+    <title>CS527 Team 5 ver1.1.5</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">CS527 Project 1 Team 5</a>
+        <div class="container-fluid text-end">
+          <img src="./image/alex.jpg"  alt="" width="30" height="30" class="d-inline-block align-text-top">
+          <img src="./image/tom.jpg" alt="" width="30" height="30" class="d-inline-block align-text-top">
+          <img src="./image/john.jpg" alt="" width="30" height="30" class="d-inline-block align-text-top">
+          <img src="./image/need.jpg" alt="" width="30" height="30" class="d-inline-block align-text-top">
+        </div>
       </div>
     </nav>
 
@@ -26,10 +32,10 @@
               <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-interval="false">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img src="./image/WeChat Screenshot_20211111231954.png" class="d-block w-100" alt="...">
+                    <img src="./image/instacartDB.png" class="d-block" style="width: 80%;" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="./image/image.png" class="d-block" style="height: 100vh;" alt="...">
+                    <img src="./image/adnimergeDB.png" class="d-block" style="width: 100%;" alt="...">
                   </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -47,30 +53,46 @@
         <div class="col-8">
           <div class="row">
             <div class="mb-3">
-              <label for="query_area" class="form-label">Input query here:</label>
-              <textarea class="form-control" id="query_area" rows="4"></textarea>
+              <div class="row mb-2">
+                <div class="col">
+                  <label for="query_area" class="form-label fw-bold h4">Input query:</label>
+                </div>
+                <div class="col-8 text-left">
+                  <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">Select Platform:</label>
+                    <select id="platform" class="form-select" id="inputGroupSelect01">
+                      <option value="mysql" selected>MySQL</option>
+                      <option value="redshift">Redshift</option>
+                      <option value="sqlserver">SQL Server</option>
+                      <option value="mongodb">MongoDB</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <textarea class="form-control" id="query_area" rows="5"></textarea>
             </div>
-            <div class="col-md-3 text-left">
-              <select id="database" class="form-select" aria-label="Default select example">
-                <option value="adnimerge" selected>adnimerge</option>
-                <option value="instacart">instacart</option>
-                <option value="adnimerge_dev">adnimerge_dev</option>
-                <option value="instacart_dev">instacart_dev</option>
-              </select>
+            <div class="row">
+              <div class="col-4">
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="inputGroupSelect02">Select DB:</label>
+                  <select id="database" class="form-select" id="inputGroupSelect02">
+                    <option value="adnimerge" selected>adnimerge</option>
+                    <option value="instacart">instacart</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-4 text-right">
+                Elasped Time: <span class="mr-1 ml-1" id="elaspedTime"></span> s
+              </div>
+              <div class="col-4 text-right text-end">
+                <button class="btn btn-secondary" id="clear_query">CLEAR</button>
+                <button class="btn btn-success" id="execute_query" type="button">RUN</button>
+              </div>
             </div>
-            <div class="col-md-3 text-left">
-              <select id="platform" class="form-select" aria-label="Default select example">
-                <option value="mysql" selected>MySQL</option>
-                <option value="redshift">Redshift</option>
-                <option value="sqlserver">SQL Server</option>
-              </select>
-            </div>
-            <div class="col-md-2 text-right">
-              Elasped Time: <span class="mr-1 ml-1" id="elaspedTime"></span> s
-            </div>
-            <div class="col-md-4 text-right text-end">
-              <button class="btn btn-secondary" id="clear_query">CLEAR</button>
-              <button class="btn btn-success" id="execute_query" type="button">RUN</button>
+            <div id="mongoHint" class="col-12 mb-1 mt-1" style="display: none;">
+              <b>Notices for MongoDB:</b><br/>
+              1. The DB <i>cs527</i> in MongoDB contains both <i>instacart</i> and <i>ADNIMERGE</i> collections(tables).<br/>
+              2. SQLs for MongoDB are case-sensitive. <b>ALL</b> columns' name in <i>ADNIMERGE</i> collection are <b>UPPERCASE</b>.<br/>
             </div>
             <div class="col-12 mb-3 mt-5">
               <div class="row">
@@ -78,8 +100,15 @@
               <span class="mr-1 ml-1 text-danger" id="errorMsg"></span>
                 </div>
               </div>
+              <div id="spinner" class="overlay" style="display: none;">
+                <div class="d-flex justify-content-center">  
+                  <div class="spinner-border text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
               <div class="overflow-auto" style="max-height: 60vh; font-size: 0.8em;">
-                <table class="table table-striped">
+                <table id="theTable" class="table table-primary table-striped">
                   <thead>
                   </thead>
                   <tbody>
@@ -99,6 +128,7 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      let curr_platform = 'mysql';
 
       $(() => {
         $("#clear_query").click(function(){
@@ -108,6 +138,37 @@
         $('.carousel').carousel({
           interval: false,
         });
+
+        // Indent in textarea
+        $('#query_area').on('keydown', function(e) {
+          if (e.keyCode == 9 || e.which == 9) {
+            e.preventDefault();
+            var s = this.selectionStart;
+            $(this).val(function(i, v) {
+              return v.substring(0, s) + "\t" + v.substring(this.selectionEnd)
+            });
+            this.selectionEnd = s + 1;
+          }
+        });
+
+        // Check current platform version.
+        $('#platform').change(function(){
+          let selected_platform= $(this).val();
+          if (selected_platform == 'mongodb') {
+            curr_platform = 'mongodb';
+            $('#database').empty();
+            let placeholder = `<option value="cs527" selected>cs527</option>`;
+            $('#database').append(placeholder);
+            $('#mongoHint').css("display", "block");
+          } else {
+            $('#database').empty();
+            curr_platform = 'mysql';
+            let placeholder = `<option value="adnimerge" selected>adnimerge</option>
+                               <option value="instacart">instacart</option>`;
+            $('#database').append(placeholder);
+            $('#mongoHint').css("display", "none");
+          }
+        });
       })
 
       $("#execute_query").click(function(){
@@ -116,6 +177,36 @@
         $("tbody").empty();
         $("#elaspedTime").empty();
         $("#errorMsg").empty();
+        $("#spinner").css("display", "block");
+
+        switch ($('#platform').val()) {
+            case 'MySQL':
+              $(`#theTable`).removeClass("table-success")
+              $(`#theTable`).removeClass("table-dark")
+              $(`#theTable`).removeClass("table-light")
+              $(`#theTable`).addClass("table-primary")
+              break
+            case 'redshift':
+              $(`#theTable`).removeClass("table-success")
+              $(`#theTable`).removeClass("table-primary")
+              $(`#theTable`).removeClass("table-light")
+              $(`#theTable`).addClass("table-dark")
+              break
+            case 'sqlserver':
+              $(`#theTable`).removeClass("table-success")
+              $(`#theTable`).removeClass("table-dark")
+              $(`#theTable`).removeClass("table-primary")
+              $(`#theTable`).addClass("table-light")
+              break
+            case 'mongodb':
+              $(`#theTable`).removeClass("table-dark")
+              $(`#theTable`).removeClass("table-primary")
+              $(`#theTable`).removeClass("table-light")
+              $(`#theTable`).addClass("table-success")
+              break
+            default:
+
+          }
 
         const database = $('#database').find(":selected").val();
         const platform = $('#platform').find(":selected").val();
@@ -131,41 +222,58 @@
           type: "POST",
           // url: `http://axjour.tplinkdns.com/db/${platform}`,
           url: `http://ec2-3-131-198-17.us-east-2.compute.amazonaws.com:8081/db/${platform}`,
+          // url: `http://localhost:8081/db/${platform}`,
           dataType: 'json',
           contentType: 'application/json',
           data: JSON.stringify(data),
           success: function (rtn){
             appendData(rtn);
+            $("#spinner").css("display", "none");
           },
           error: (error) => {
             console.error(error);
             $(`#errorMsg`).text(error.responseText);
+            $("#spinner").css("display", "none");
           }
         });
 
         const appendData = rtn => {
-          const col_name = rtn.colName;
-          const raw_data = rtn.rawData;
+
           const timeElasped = rtn.elapsed_time / 1000;
-
-          let title_placeholder = `<tr>`
-          col_name.forEach(col => {
-            title_placeholder = title_placeholder + `<td>${col}</td>`
-          });
-          title_placeholder = title_placeholder + `</tr>`
-          $('thead').append(title_placeholder)
-
+          $('#elaspedTime').text(timeElasped);
           
-          raw_data.forEach(row => {
-            let placeholder = `<tr>`
-            row.forEach(i => {
-              placeholder = placeholder + `<td>${i}</td>`
-            })
-            placeholder = placeholder + `</tr>`
-            $('tbody').append(placeholder)
-          });
+          const raw_data = rtn.rawData;
 
-          $('#elaspedTime').text(timeElasped)
+          if (curr_platform == 'mongodb') {
+            raw_data.forEach(row => {
+              let placeholder = `<tr>`;
+              for (const prop in row) {
+                placeholder = placeholder + `<td>${prop}: ${row[prop]}</td>`
+              }
+              placeholder = placeholder + `</tr>`
+              $('tbody').append(placeholder)
+            });
+          } else {
+            const col_name = rtn.colName;
+
+            let title_placeholder = `<tr>`
+            col_name.forEach(col => {
+              title_placeholder = title_placeholder + `<td>${col}</td>`
+            });
+            title_placeholder = title_placeholder + `</tr>`
+            $('thead').append(title_placeholder)
+
+            
+            raw_data.forEach(row => {
+              let placeholder = `<tr>`
+              row.forEach(i => {
+                placeholder = placeholder + `<td>${i}</td>`
+              })
+              placeholder = placeholder + `</tr>`
+              $('tbody').append(placeholder)
+            });
+
+          }
         }
 
       });
