@@ -29,7 +29,6 @@ public class MySQLconn {
         try {
 
             //Open a connection and define properties.
-            System.out.println("Connecting to MySQL...");
             connect = DriverManager
                     .getConnection("jdbc:mysql://cs527-database.c0rg6mabksy4.us-east-2.rds.amazonaws.com/"+getDb()+"?useSSL=false",
                             username,
@@ -69,7 +68,6 @@ public class MySQLconn {
         } catch (Exception e) {
             throw e;
         } finally {
-            System.out.println("Closing MySQL connection...");
             close();
         }
         return null;

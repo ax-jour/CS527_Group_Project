@@ -29,7 +29,6 @@ public class Redshiftconn {
     public ResponseDetail exec(String query) throws Exception {
         try{
             //Open a connection and define properties.
-            System.out.println("Connecting to Redshift...");
             connect = DriverManager
                     .getConnection("jdbc:redshift://cs527-cluster.cjrs6ndwim0l.us-east-2.redshift.amazonaws.com:5439/"+getDb()+"?useSSL=false",
                             username,
@@ -68,7 +67,6 @@ public class Redshiftconn {
         } catch (Exception e) {
             throw e;
         } finally {
-            System.out.println("Closing Redshift connection...");
             close();
         }
         return null;

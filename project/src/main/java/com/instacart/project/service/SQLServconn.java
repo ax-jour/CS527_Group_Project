@@ -29,7 +29,6 @@ public class SQLServconn {
     public ResponseDetail exec(String query) throws Exception {
         try{
             //Open a connection and define properties.
-            System.out.println("Connecting to SQL server...");
             connect = DriverManager
                     .getConnection("jdbc:sqlserver://cs527-sqlserver2.c0rg6mabksy4.us-east-2.rds.amazonaws.com:1433;databaseName="+getDb()+
                             ";user="+username+
@@ -68,7 +67,6 @@ public class SQLServconn {
         } catch (Exception e) {
             throw e;
         } finally {
-            System.out.println("Closing SQL server connection...");
             close();
         }
         return null;
