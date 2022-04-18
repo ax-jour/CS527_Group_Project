@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="redshift-jdbc42-2.0.0.7">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/Dev/jars/redshift-jdbc42-2.0.0.7.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
