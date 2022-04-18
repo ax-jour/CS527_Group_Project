@@ -9,8 +9,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 
 public class MySQLconn {
-    private String username = "admin";
-    private String password = "FR$gt5HY^";
+    private String username = "";
+    private String password = "";
 
     private String db = null;
     private Connection connect = null;

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class Redshiftconn {
 
-    private String username = "admin";
-    private String password = "JU&ki8LO(";
+    private String username = "";
+    private String password = "";
 
     private String db = null;
     private Connection connect = null;

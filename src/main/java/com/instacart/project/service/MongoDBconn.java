@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MongoDBconn {
-    private String username = "superadmin";
-    private String password = "AQ%21sw2DE%23";
+    private String username = "";
+    private String password = "";
     private String uri = "mongodb://"+username+":"+password+"@ec2-18-117-109-188.us-east-2.compute.amazonaws.com:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false";
     private String db = null;
 

@@ -28,8 +28,8 @@ public class CSVscanner {
         String key = file.getFile_path()+file.getFile_name();
 
         AwsBasicCredentials awsCreds = AwsBasicCredentials.create(
-                "AKIA4NVKYPKDVGUT3TXI",
-                "3AdM54TRH01P0CJCbUR7CnP+6vDRPnoQ6VjAvb/u");
+                "",
+                "");
 
         Region region = Region.US_EAST_2;
         S3Client s3 = S3Client.builder()

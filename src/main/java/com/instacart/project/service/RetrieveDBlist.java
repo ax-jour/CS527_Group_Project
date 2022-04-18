@@ -7,10 +7,10 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class RetrieveDBlist {
-    private String username = "admin";
-    private String mysql_password = "FR$gt5HY^";
-    private String redshift_password = "JU&ki8LO(";
-    private String sqlserver_password = "JU&ki8LO(";
+    private String username = "";
+    private String mysql_password = "";
+    private String redshift_password = "";
+    private String sqlserver_password = "";
 
     private Connection connect = null;
     private DatabaseMetaData rsmd = null;
